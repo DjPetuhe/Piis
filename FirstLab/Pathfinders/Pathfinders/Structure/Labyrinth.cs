@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -31,13 +32,45 @@ namespace Pathfinders.Structure
                 Console.Write("#");
                 for (int j = 0; j < width; j++)
                 {
-                    if ((i, j) == startPoint) Console.Write("s");
-                    else if ((i, j) == endPoint) Console.Write("e");
-                    else Console.Write(matrix[i][j] == true ? "_" : "#");
+                    if ((i, j) == startPoint) Console.Write("S");
+                    else if ((i, j) == endPoint) Console.Write("E");
+                    else Console.Write(matrix[i][j] ? "." : "#");
                 }
                 Console.Write("#\n");
             }
             Console.WriteLine(new String('#', width + 2));
+        }
+        public void ShowPath(List<(int, int)> path)
+        {
+            if (path.Count == 0) Console.WriteLine("\nAlgorithm didnt find the path!\n");
+            else
+            {
+                Console.WriteLine(new String('#', width + 2));
+                for (int i = 0; i < height; i++)
+                {
+                    Console.Write("#");
+                    for (int j = 0; j < width; j++)
+                    {
+                        if ((i, j) == startPoint) Console.Write("S");
+                        else if ((i, j) == endPoint) Console.Write("E");
+                        else if (IsPath(i, j, path)) Console.Write("o");
+                        else Console.Write(matrix[i][j] ? "." : "#");
+                    }
+                    Console.Write("#\n");
+                }
+                Console.WriteLine(new String('#', width + 2));
+            }
+        }
+        private bool IsPath(int i, int j, List<(int, int)> path)
+        {
+            foreach (var el in path)
+            {
+                if (el == (i, j))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

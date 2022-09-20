@@ -55,9 +55,9 @@ namespace Pathfinders.Structure
                 if (listMatrix[i].Length < width) throw new Exception(message: "Enetered matrix width doesn`t fit with the given matrix");
                 for (int j = 0; j < width; j++)
                 {
-                    line.Add(listMatrix[i][j] == '1' || listMatrix[i][j] == 's' || listMatrix[i][j] == 'e');
-                    if (listMatrix[i][j] == 's') startIndex = (i, j);
-                    if (listMatrix[i][j] == 'e') endIndex = (i, j);
+                    line.Add(listMatrix[i][j] == '1' || listMatrix[i][j] == 'S' || listMatrix[i][j] == 'E');
+                    if (listMatrix[i][j] == 'S') startIndex = (i, j);
+                    if (listMatrix[i][j] == 'E') endIndex = (i, j);
                 }
                 matrix.Add(line);
             }
