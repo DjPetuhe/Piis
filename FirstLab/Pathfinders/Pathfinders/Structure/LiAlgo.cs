@@ -58,50 +58,46 @@ namespace Pathfinders.Structure
         private List<(int, int)> GetUnmarkedNeighbors((int, int) curr, int d)
         {
             List<(int, int)> neighbors = new();
-            if (curr.Item2 - 1 >= 0 && way[curr.Item1][curr.Item2 - 1].Equals(0))
+            if (IsFine(curr.Item1, curr.Item2 - 1))
             {
                 neighbors.Add((curr.Item1, curr.Item2 - 1));
                 way[curr.Item1][curr.Item2 - 1] += d + 10;
             }
-            if (curr.Item1 - 1 >= 0 && way[curr.Item1 - 1][curr.Item2].Equals(0))
+            if (IsFine(curr.Item1 - 1, curr.Item2))
             {
                 neighbors.Add((curr.Item1 - 1, curr.Item2));
                 way[curr.Item1 - 1][curr.Item2] += d + 10;
             }
-            if (curr.Item2 + 1 <= l.width - 1 && way[curr.Item1][curr.Item2 + 1].Equals(0))
+            if (IsFine(curr.Item1, curr.Item2 + 1))
             {
                 neighbors.Add((curr.Item1, curr.Item2 + 1));
                 way[curr.Item1][curr.Item2 + 1] += d + 10;
             }
-            if (curr.Item1 + 1 <= l.height - 1 && way[curr.Item1 + 1][curr.Item2].Equals(0))
+            if (IsFine(curr.Item1 + 1, curr.Item2))
             {
                 neighbors.Add((curr.Item1 + 1, curr.Item2));
                 way[curr.Item1 + 1][curr.Item2] += d + 10;
             }
-            if (curr.Item1 - 1 >= 0 && curr.Item2 - 1 >= 0 &&
-                (l.matrix[curr.Item1][curr.Item2 - 1] || l.matrix[curr.Item1 - 1][curr.Item2]) &&
-                way[curr.Item1 - 1][curr.Item2 - 1].Equals(0))
+            if (IsFine(curr.Item1 - 1, curr.Item2 - 1) && 
+                (l.matrix[curr.Item1][curr.Item2 - 1] || l.matrix[curr.Item1 - 1][curr.Item2]))
             {
                 neighbors.Add((curr.Item1 - 1, curr.Item2 - 1));
                 way[curr.Item1 - 1][curr.Item2 - 1] += d + 14;
             }
-            if (curr.Item1 - 1 >= 0 && curr.Item2 + 1 <= l.width - 1 &&
-                (l.matrix[curr.Item1 - 1][curr.Item2] || l.matrix[curr.Item1][curr.Item2 + 1]) &&
-                way[curr.Item1 - 1][curr.Item2 + 1].Equals(0))
+            if (IsFine(curr.Item1 - 1, curr.Item2 + 1) && 
+                (l.matrix[curr.Item1 - 1][curr.Item2] || l.matrix[curr.Item1][curr.Item2 + 1]))
             {
                 neighbors.Add((curr.Item1 - 1, curr.Item2 + 1));
                 way[curr.Item1 - 1][curr.Item2 + 1] += d + 14;
             }
-            if (curr.Item1 + 1 <= l.height - 1 && curr.Item2 + 1 <= l.width - 1 &&
-                (l.matrix[curr.Item1][curr.Item2 + 1] || l.matrix[curr.Item1 + 1][curr.Item2]) &&
-                way[curr.Item1 + 1][curr.Item2 + 1].Equals(0))
+            if (IsFine(curr.Item1 + 1, curr.Item2 + 1) && 
+                (l.matrix[curr.Item1][curr.Item2 + 1] || l.matrix[curr.Item1 + 1][curr.Item2]))
             {
                 neighbors.Add((curr.Item1 + 1, curr.Item2 + 1));
                 way[curr.Item1 + 1][curr.Item2 + 1] += d + 14;
             }
-            if (curr.Item1 + 1 <= l.height - 1 && curr.Item2 - 1 >= 0 &&
-                (l.matrix[curr.Item1 + 1][curr.Item2] || l.matrix[curr.Item1][curr.Item2 - 1]) &&
-                way[curr.Item1 + 1][curr.Item2 - 1].Equals(0))
+            if (IsFine(curr.Item1 + 1, curr.Item2 - 1) && 
+                (l.matrix[curr.Item1 + 1][curr.Item2] || l.matrix[curr.Item1][curr.Item2 - 1]))
             {
                 neighbors.Add((curr.Item1 + 1, curr.Item2 - 1));
                 way[curr.Item1 + 1][curr.Item2 - 1] += d + 14;
@@ -113,39 +109,54 @@ namespace Pathfinders.Structure
             }
             return neighbors;
         }
+        private bool IsFine(int i, int j)
+        {
+            if (i < 0 || j < 0) return false;
+            if (i > l.height - 1 || j > l.width - 1) return false;
+            if (!way[i][j].Equals(0)) return false;
+            return true;
+        }
         private (int, int) FindBestNeighbor((int, int) curr, int d)
         {
             (int, int) best = (-1, -1);
             if (d <= 1.4) return l.startPoint;
-            if (curr.Item2 - 1 >= 0 && way[curr.Item1][curr.Item2 - 1].Equals(d - 10))
+            if (curr.Item2 - 1 >= 0 && 
+                way[curr.Item1][curr.Item2 - 1].Equals(d - 10))
             {
                 best = (curr.Item1, curr.Item2 - 1);
             }
-            else if (curr.Item1 - 1 >= 0 && way[curr.Item1 - 1][curr.Item2].Equals(d - 10))
+            else if (curr.Item1 - 1 >= 0 && 
+                way[curr.Item1 - 1][curr.Item2].Equals(d - 10))
             {
                 best = (curr.Item1 - 1, curr.Item2);
             }
-            else if (curr.Item2 + 1 <= l.width - 1 && way[curr.Item1][curr.Item2 + 1].Equals(d - 10))
+            else if (curr.Item2 + 1 <= l.width - 1 && 
+                way[curr.Item1][curr.Item2 + 1].Equals(d - 10))
             {
                 best = (curr.Item1, curr.Item2 + 1);
             }
-            else  if (curr.Item1 + 1 <= l.height - 1 && way[curr.Item1 + 1][curr.Item2].Equals(d - 10))
+            else  if (curr.Item1 + 1 <= l.height - 1 && 
+                way[curr.Item1 + 1][curr.Item2].Equals(d - 10))
             {
                 best = (curr.Item1 + 1, curr.Item2);
             }
-            if (curr.Item1 - 1 >= 0 && curr.Item2 - 1 >= 0 && way[curr.Item1 - 1][curr.Item2 - 1].Equals(d - 14))
+            if (curr.Item1 - 1 >= 0 && curr.Item2 - 1 >= 0 && 
+                way[curr.Item1 - 1][curr.Item2 - 1].Equals(d - 14))
             {
                 best = (curr.Item1 - 1, curr.Item2 - 1);
             }
-            else if (curr.Item1 - 1 >= 0 && curr.Item2 + 1 <= l.width - 1 && way[curr.Item1 - 1][curr.Item2 + 1].Equals(d - 14))
+            else if (curr.Item1 - 1 >= 0 && curr.Item2 + 1 <= l.width - 1 && 
+                way[curr.Item1 - 1][curr.Item2 + 1].Equals(d - 14))
             {
                 best = (curr.Item1 - 1, curr.Item2 + 1);
             }
-            else if (curr.Item1 + 1 <= l.height - 1 && curr.Item2 + 1 <= l.width - 1 && way[curr.Item1 + 1][curr.Item2 + 1].Equals(d - 14))
+            else if (curr.Item1 + 1 <= l.height - 1 && curr.Item2 + 1 <= l.width - 1 && 
+                way[curr.Item1 + 1][curr.Item2 + 1].Equals(d - 14))
             {
                 best = (curr.Item1 + 1, curr.Item2 + 1);
             }
-            else if (curr.Item1 + 1 <= l.height - 1 && curr.Item2 - 1 >= 0 && way[curr.Item1 + 1][curr.Item2 - 1].Equals(d - 14))
+            else if (curr.Item1 + 1 <= l.height - 1 && curr.Item2 - 1 >= 0 && 
+                way[curr.Item1 + 1][curr.Item2 - 1].Equals(d - 14))
             {
                 best = (curr.Item1 + 1, curr.Item2 - 1);
             }

@@ -13,6 +13,9 @@ namespace Pathfinders
             LiAlgo alg1 = new(l);
             Console.WriteLine("\nLee algorithm path:\n");
             l.ShowPath(alg1.FindPath());
+            AstarAlgo alg2 = new(l);
+            Console.WriteLine("\nA* algorithm path:\n");
+            l.ShowPath(alg2.FindPath());
         }
     }
 }
