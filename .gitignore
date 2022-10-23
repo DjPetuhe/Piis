@@ -21,3 +21,21 @@ FirstLab/Pathfinders/Pathfinders/obj/
 *.csproj
 
 *.v5
+
+отчеты/
+
+кр/
+
+*.vsidx
+
+*.lock
+
+*.testlog
+
+*.manifest
+
+*.props
+
+*.targets
+
+SecondLab/LabMinimax/MinimaxLab/obj/Debug/net6.0/
