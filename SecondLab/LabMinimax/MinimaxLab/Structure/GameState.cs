@@ -27,7 +27,7 @@ namespace MinimaxLab.Structure
             }
             if (Player == Enemy)
             {
-                return -10000 + depth;
+                return -10000 - depth;
             }
             LiAlgo.FindMove(g, Player, g.finish, true, out int distToFinish);
             LiAlgo.FindMove(g, Player, Enemy, true, out int distToEnemy);
