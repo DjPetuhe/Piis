@@ -148,7 +148,7 @@ namespace MinimaxLab.Structure
                 else
                 {
                     tempHeuristic = -NegaScout(g, gameStates[i], depth - 1, -alpha - 1, -alpha, !player, -turn).Item2;
-                    if (tempHeuristic > alpha && tempHeuristic < beta && depth > 0)
+                    if (tempHeuristic > alpha && tempHeuristic < beta && depth > 1)
                     {
                         tempHeuristic2 = -NegaScout(g, gameStates[i], depth - 1, -beta , -tempHeuristic, !player, -turn).Item2;
                         if (tempHeuristic2 > tempHeuristic)
