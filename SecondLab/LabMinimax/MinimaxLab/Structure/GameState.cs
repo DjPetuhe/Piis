@@ -1,6 +1,4 @@
 ﻿
-using System.Collections.Generic;
-
 namespace MinimaxLab.Structure
 {
     internal class GameState
@@ -9,16 +7,19 @@ namespace MinimaxLab.Structure
         public (int, int) Enemy { get; set; }
         public int Heuristic { get; private set; } = 0;
         public bool GameEnded { get; private set; } = false;
+
         public GameState((int,int) player, (int,int) enemy, Game g)
         {
             this.Player = player;
             this.Enemy = enemy;
             if (Player == g.finish || Player == Enemy) GameEnded = true;
         }
+
         public void UpdateHeuristic(Game g, int depth)
         {
             Heuristic = CalculateHeuristic(g, depth);
         }
+
         private int CalculateHeuristic(Game g, int depth)
         {
             if (Player == g.finish)
@@ -63,6 +64,7 @@ namespace MinimaxLab.Structure
             if (!g.matrix[curr.Item1][curr.Item2]) return false;
             return true;
         }
+
         private static List<(int, int)> GenerateNewPos(Game g, (int, int) oldPos)
         {
             List<(int, int)> poses = new();

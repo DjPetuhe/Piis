@@ -19,6 +19,7 @@ namespace MinimaxLab.Structure
             if (isEnemyWall) way[g.State.Enemy.Item1][g.State.Enemy.Item2] = -1;
             return way;
         }
+
         public static (int, int) FindMove(Game g, (int, int) from, (int, int) to, bool isEnemyWall)
         {
             return FindMove(g, from, to, isEnemyWall ,out _);
@@ -48,6 +49,7 @@ namespace MinimaxLab.Structure
             }
             return to;
         }
+
         private static List<(int, int)> GetUnmarkedNeighbors(Game g, List<List<int>> way, (int, int) curr, int d, (int,int) from)
         {
             List<(int, int)> neighbors = new();
@@ -68,6 +70,7 @@ namespace MinimaxLab.Structure
             }
             return neighbors;
         }
+
         private static bool IsFine(Game g, List<List<int>> way, int i, int j)
         {
             if (i < 0 || j < 0) return false;
@@ -75,6 +78,7 @@ namespace MinimaxLab.Structure
             if (!way[i][j].Equals(0)) return false;
             return true;
         }
+
         private static (int, int) FindBestNeighbor(Game g, List<List<int>> way, (int, int) curr, int d, (int, int) from)
         {
             (int, int) best = (-1, -1);

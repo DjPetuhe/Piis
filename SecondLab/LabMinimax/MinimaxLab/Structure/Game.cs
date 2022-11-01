@@ -3,27 +3,38 @@ namespace MinimaxLab.Structure
 {
     internal class Game
     {
-        public Game(List<List<bool>> matrix, (int, int) player, (int, int) enemy, (int, int) finish, int height, int width, bool prunings)
+        public enum Algo
+        {
+            Minimax = 0,
+            MinimaxWithPrunings = 1,
+            Negamax = 2,
+            NegamaxWithPrunings = 3,
+            NegaScout = 4
+        };
+
+        public readonly List<List<bool>> matrix;
+        public readonly (int, int) finish;
+        public readonly int height;
+        public readonly int width;
+        public readonly Algo algo;
+        public GameState State { get; private set; }
+
+        public Game(List<List<bool>> matrix, (int, int) player, (int, int) enemy, (int, int) finish, int height, int width, Algo algo)
         {
             this.matrix = matrix;
             this.finish = finish;
             this.height = height;
             this.width = width;
-            this.prunings = prunings;
+            this.algo = algo;
             State = new(player, enemy, this);
         }
-        public readonly List<List<bool>> matrix;
-        public readonly (int, int) finish;
-        public readonly int height;
-        public readonly int width;
-        public readonly bool prunings;
-        public GameState State { get; private set; }
+
         public void RunGame()
         {
             ShowLabyrinth();
             Console.WriteLine("\nPress any button to start...");
             Console.ReadKey();
-            while(!isFinished(State))
+            while(!IsFinished(State))
             {
                 System.Threading.Thread.Sleep(1000);
                 MovePlayer();
@@ -33,16 +44,26 @@ namespace MinimaxLab.Structure
             }
             Console.WriteLine("\nGame is finished!");
         }
+
         private void MovePlayer()
         {
-            if (prunings) State.Player = MinimaxAlgos.AlphaBeta(this, State, 5, int.MinValue, int.MaxValue, true).Item1.Player;
-            else State.Player = MinimaxAlgos.Minimax(this, State, 5, true).Item1.Player;
+            State.Player = algo switch
+            {
+                Algo.Minimax => MinimaxAlgos.Minimax(this, State, 5, true).Item1.Player,
+                Algo.MinimaxWithPrunings => MinimaxAlgos.AlphaBeta(this, State, 5, int.MinValue + 1, int.MaxValue, true).Item1.Player,
+                Algo.Negamax => MinimaxAlgos.Negamax(this, State, 5, true, 1).Item1.Player,
+                Algo.NegamaxWithPrunings => MinimaxAlgos.NegamaxAlphaBeta(this, State, 5, int.MinValue + 1, int.MaxValue, true, 1).Item1.Player,
+                Algo.NegaScout => MinimaxAlgos.NegaScout(this, State, 5, int.MinValue + 1, int.MaxValue, true, 1).Item1.Player,
+                _ => throw new NotImplementedException()
+            };
         }
+
         private void MoveEnemy()
         {
             State.Enemy = LiAlgo.FindMove(this, State.Player, State.Enemy, false);
         }
-        private bool isFinished(GameState current)
+
+        private bool IsFinished(GameState current)
         {
             return current.Player == finish || current.Player == current.Enemy;
         }

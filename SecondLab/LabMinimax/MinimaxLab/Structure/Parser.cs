@@ -7,7 +7,7 @@ namespace MinimaxLab.Structure
         {
             try
             {
-                (string, int, int, bool) values = UserInput();
+                (string, int, int, Game.Algo) values = UserInput();
                 return ToBoolMatrix(File.ReadLines(values.Item1).ToList(), values.Item2, values.Item3, values.Item4);
             }
             catch (Exception e)
@@ -17,7 +17,7 @@ namespace MinimaxLab.Structure
             }
         }
 
-        private static (string, int, int, bool) UserInput()
+        private static (string, int, int, Game.Algo) UserInput()
         {
             try
             {
@@ -27,12 +27,18 @@ namespace MinimaxLab.Structure
                 string? height = Console.ReadLine();
                 Console.WriteLine("Enter matrix width:");
                 string? width = Console.ReadLine();
-                Console.WriteLine("Enter 1 to use alpha-beta prunnings:");
-                string? pruns = Console.ReadLine();
-                if (dir == null || height == null || width == null || pruns == null) throw new ArgumentNullException("Some arguments are null!");
-                bool prunings = false;
-                if (pruns.Equals("1")) prunings = true;
-                (string, int, int, bool) values = (dir, int.Parse(height), int.Parse(width), prunings);
+                Console.WriteLine("Choose algo:\n(0)Minimax\n(1)MinimaxAlphaBeta\n(2)Negamax\n(3)NegamaxAlphaBeta\n(4)NegaScout");
+                string? algo = Console.ReadLine();
+                if (dir == null || height == null || width == null || algo == null) throw new ArgumentNullException("Some arguments are null!");
+                Game.Algo algos = algo switch
+                {
+                    "1" => Game.Algo.MinimaxWithPrunings,
+                    "2" => Game.Algo.Negamax,
+                    "3" => Game.Algo.NegamaxWithPrunings,
+                    "4" => Game.Algo.NegaScout,
+                    _ => Game.Algo.Minimax
+                };
+                (string, int, int, Game.Algo) values = (dir, int.Parse(height), int.Parse(width), algos);
                 if (values.Item2 < 1 || values.Item3 < 1 || values.Item2 > 500 || values.Item3 > 500) throw new Exception(message: "Too big or too small values!");
                 return values;
             }
@@ -42,7 +48,8 @@ namespace MinimaxLab.Structure
                 return UserInput();
             }
         }
-        private static Game ToBoolMatrix(List<string> listMatrix, int height, int width, bool prunings)
+
+        private static Game ToBoolMatrix(List<string> listMatrix, int height, int width, Game.Algo algos)
         {
             List<List<bool>> matrix = new();
             (int, int) player = (-1, -1);
@@ -63,7 +70,7 @@ namespace MinimaxLab.Structure
                 matrix.Add(line);
             }
             if (player == (-1, -1) || finish == (-1, -1) || enemy == (-1, -1)) throw new Exception(message: "No starting or ending point!");
-            return new Game (matrix, player, enemy, finish, height, width, prunings);
+            return new Game (matrix, player, enemy, finish, height, width, algos);
         }
     }
 }
