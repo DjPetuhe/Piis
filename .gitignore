@@ -39,3 +39,11 @@ FirstLab/Pathfinders/Pathfinders/obj/
 *.targets
 
 SecondLab/LabMinimax/MinimaxLab/obj/Debug/net6.0/
+
+FourthLab/FourthLab/obj/Debug/net6.0/.NETCoreApp,Version=v6.0.AssemblyAttributes.cs
+
+FourthLab/FourthLab/obj/Debug/net6.0/FourthLab.AssemblyInfo.cs
+
+FourthLab/FourthLab/obj/Debug/net6.0/FourthLab.GeneratedMSBuildEditorConfig.editorconfig
+
+FourthLab/FourthLab/obj/Debug/net6.0/FourthLab.GlobalUsings.g.cs
