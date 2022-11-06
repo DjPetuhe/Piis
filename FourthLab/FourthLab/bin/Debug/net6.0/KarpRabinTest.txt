@@ -1,0 +1,2 @@
+Substring: "cat"
+String: "Big fat cat lives in the small town with others cats."

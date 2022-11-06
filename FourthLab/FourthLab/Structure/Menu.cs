@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace FourthLab.Structure
 {
@@ -17,13 +14,16 @@ namespace FourthLab.Structure
                 switch (input.Item1)
                 {
                     case Algos.Algo.KarpRabins:
-                        PrintResultsKarpRabing(Algos.KarpRabinAlgo(Parser.ParseStrings(input.Item2)));
+                        (string, string) valuesKR = Parser.ParseStrings(input.Item2);
+                        PrintResultsKarpRabing(Algos.KarpRabinAlgo(valuesKR), valuesKR);
                         break;
                     case Algos.Algo.Dijkstras:
-                        PrintResultsDijkstra(Algos.DijkstraAlgo(Parser.ParseOrientedGraph(input.Item2)));
+                        List<List<int>> valuesD = Parser.ParseOrientedGraph(input.Item2);
+                        PrintResultsDijkstra(Algos.DijkstraAlgo(valuesD), valuesD);
                         break;
                     case Algos.Algo.Prims:
-                        PrintResultsPrim(Algos.PrimsAlgo(Parser.ParseUnorientedGraph(input.Item2)));
+                        List<List<int>> valuesP = Parser.ParseUnorientedGraph(input.Item2);
+                        PrintResultsPrim(Algos.PrimsAlgo(valuesP), valuesP);
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
@@ -36,7 +36,7 @@ namespace FourthLab.Structure
             }
         }
 
-        public static (Algos.Algo, string) UserInput()
+        private static (Algos.Algo, string) UserInput()
         {
             try
             {
@@ -51,6 +51,7 @@ namespace FourthLab.Structure
                     "2" => Algos.Algo.Prims,
                     _ => Algos.Algo.KarpRabins
                 };
+                Console.Clear();
                 return (algos, dir);
             }
             catch (Exception e)
@@ -60,19 +61,48 @@ namespace FourthLab.Structure
             }
         }
 
-        public static void PrintResultsKarpRabing((List<int>, int) subStrings)
+        private static void PrintResultsKarpRabing((List<int>, int) subStrings, (string, string) values)
         {
-
+            Console.WriteLine("Choosen algorithm: Karp-Rabin's\n");
+            Console.WriteLine($"Searched: \"{values.Item1}\"");
+            Console.WriteLine(String.Format("{0,10}", "In: ") + '\"' + values.Item2 + '\"');
+            //TODO: print results
         }
 
-        public static void PrintResultsDijkstra(List<int> lenghts)
+        private static void PrintResultsDijkstra(List<int> lenghts, List<List<int>> values)
         {
-
+            Console.WriteLine("Choosen algorithm: Dijkstra's\n");
+            Console.WriteLine("Starting oriented graph as a adjecency matrix:\n");
+            PrintMatrix(values);
+            //TODO: print results
         }
 
-        public static void PrintResultsPrim(List<int> mst)
+        private static void PrintResultsPrim(List<int> mst, List<List<int>> values)
         {
+            Console.WriteLine("Choosen algorithm: Prim's\n");
+            Console.WriteLine("Starting unoriented graph as a adjecency matrix:\n");
+            PrintMatrix(values);
+            //TODO: print results
+        }
 
+        private static void PrintMatrix(List<List<int>> graph)
+        {
+            Console.Write("   |");
+            for (int i = 0; i < graph.Count; i++)
+            {
+                Console.Write(string.Format("{0,4}", $"{i + 1} "));
+            }
+            Console.WriteLine("\n----" + new string('-', graph.Count * 4));
+            for (int i = 0; i < graph.Count; i++)
+            {
+                Console.Write(string.Format("{0,4}", $"{i + 1}|"));
+                foreach (var el in graph[i])
+                {
+                    if (el == -1) Console.Write(string.Format("{0,4}", "inf"));
+                    else Console.Write(string.Format("{0,4}", $"{el} "));
+                }
+                Console.Write('\n');
+            }
         }
     }
 }
