@@ -14,8 +14,8 @@ namespace FourthLab.Structure
                 switch (input.Item1)
                 {
                     case Algos.Algo.KarpRabins:
-                        (string, string) valuesKR = Parser.ParseStrings(input.Item2);
-                        PrintResultsKarpRabing(Algos.KarpRabinAlgo(valuesKR), valuesKR);
+                        (List<string>, string) valuesKR = Parser.ParseStrings(input.Item2);
+                        PrintResultsKarpRabing(Algos.KarpRabinAlgo(valuesKR.Item1, valuesKR.Item2), valuesKR);
                         break;
                     case Algos.Algo.Dijkstras:
                         List<List<int>> valuesD = Parser.ParseOrientedGraph(input.Item2);
@@ -61,12 +61,22 @@ namespace FourthLab.Structure
             }
         }
 
-        private static void PrintResultsKarpRabing((List<int>, int) subStrings, (string, string) values)
+        private static void PrintResultsKarpRabing((List<List<int>>, List<int>) found, (List<string>, string) values)
         {
             Console.WriteLine("Choosen algorithm: Karp-Rabin's\n");
-            Console.WriteLine($"Searched: \"{values.Item1}\"");
+            Console.WriteLine($"Searched: \"{string.Join("\" \"", values.Item1)}\"");
             Console.WriteLine(String.Format("{0,10}", "In: ") + '\"' + values.Item2 + '\"');
-            //TODO: print results
+            for (int i = 0; i < found.Item2.Count; i++)
+            {
+                Console.WriteLine(string.Format("{0, -20}", "\nFor searched:") + values.Item1[i]);
+                Console.WriteLine($"Amount of matches: {found.Item2[i]}");
+                Console.Write(string.Format("{0,-19}","Match indexes: "));
+                foreach (var index in found.Item1[i])
+                {
+                    Console.Write($"{index} ");
+                }
+                Console.Write('\n');
+            }
         }
 
         private static void PrintResultsDijkstra(List<int> lenghts, List<List<int>> values)

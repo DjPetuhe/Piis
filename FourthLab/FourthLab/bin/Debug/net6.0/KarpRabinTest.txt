@@ -1,2 +1,2 @@
-Substring: "cat"
+Substring: "cat" "at" "Big fat cat" "dog"
 String: "Big fat cat lives in the small town with others cats."

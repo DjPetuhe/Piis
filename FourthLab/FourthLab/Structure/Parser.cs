@@ -7,11 +7,12 @@ namespace FourthLab.Structure
 {
     internal static class Parser
     {
-        public static (string, string) ParseStrings(string dir)
+        public static (List<string>, string) ParseStrings(string dir)
         {
             List<string> values = File.ReadAllText(dir).Split("\"").Where((item, index) => index % 2 != 0).ToList();
-            if (values.Count != 2) throw new Exception(message: "Wrong file formatting!");
-            return (values[0], values[1]);
+            if (values.Count < 2) throw new Exception(message: "Wrong file formatting!");
+            List<string> searched = values.GetRange(0, values.Count - 1);
+            return (searched.OrderBy(x => x.Length).ToList(), values.Last());
         }
 
         public static List<List<int>> ParseOrientedGraph(string dir)

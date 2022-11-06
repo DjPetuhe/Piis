@@ -10,3 +10,6 @@ namespace Program
         }
     }
 }
+//KarpRabinTest.txt
+//DijkstraTest.txt
+//PrimTest.txt
