@@ -1,25 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FourthLab.Structure
 {
-    internal static class Algos
+    internal static class KarpRabinsAlgo
     {
-        public enum Algo
-        {
-            KarpRabins = 0,
-            Dijkstras = 1,
-            Prims = 2
-        };
-
         private static readonly int variant = 26;
 
-        public static (List<List<int>>, List<int>) KarpRabinAlgo(List<string> searched, string full) 
+        public static (List<List<int>>, List<int>) Solve(List<string> searched, string full) 
         {
             List<int> amounts = new (new int[searched.Count]);
             List<int> searchedHashs = new();
@@ -70,10 +58,5 @@ namespace FourthLab.Structure
             }
             return true;
         }
-
-        public static List<int> DijkstraAlgo(List<List<int>> graph) { return new List<int>(); }
-
-        public static List<int> PrimsAlgo(List<List<int>> graph) { return new List<int>(); }
-
     }
 }

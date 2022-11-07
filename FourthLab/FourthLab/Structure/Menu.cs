@@ -6,24 +6,31 @@ namespace FourthLab.Structure
 {
     internal static class Menu
     {
+        public enum Algo
+        {
+            KarpRabins = 0,
+            Dijkstras = 1,
+            Prims = 2
+        };
+
         public static void Start()
         {
             try
             {
-                (Algos.Algo, string) input = UserInput();
+                (Algo, string) input = UserInput();
                 switch (input.Item1)
                 {
-                    case Algos.Algo.KarpRabins:
+                    case Algo.KarpRabins:
                         (List<string>, string) valuesKR = Parser.ParseStrings(input.Item2);
-                        PrintResultsKarpRabing(Algos.KarpRabinAlgo(valuesKR.Item1, valuesKR.Item2), valuesKR);
+                        PrintResultsKarpRabing(KarpRabinsAlgo.Solve(valuesKR.Item1, valuesKR.Item2), valuesKR);
                         break;
-                    case Algos.Algo.Dijkstras:
+                    case Algo.Dijkstras:
                         List<List<int>> valuesD = Parser.ParseOrientedGraph(input.Item2);
-                        PrintResultsDijkstra(Algos.DijkstraAlgo(valuesD), valuesD);
+                        PrintResultsDijkstra(DijkstrasAlgo.Solve(valuesD), valuesD);
                         break;
-                    case Algos.Algo.Prims:
+                    case Algo.Prims:
                         List<List<int>> valuesP = Parser.ParseUnorientedGraph(input.Item2);
-                        PrintResultsPrim(Algos.PrimsAlgo(valuesP), valuesP);
+                        PrintResultsPrim(PrimsAlgo.Solve(valuesP), valuesP);
                         break;
                     default:
                         throw new InvalidEnumArgumentException();
@@ -36,7 +43,7 @@ namespace FourthLab.Structure
             }
         }
 
-        private static (Algos.Algo, string) UserInput()
+        private static (Algo, string) UserInput()
         {
             try
             {
@@ -45,11 +52,11 @@ namespace FourthLab.Structure
                 Console.WriteLine("Enter txt directory:");
                 string? dir = Console.ReadLine();
                 if (algo == null || dir == null) throw new ArgumentNullException("Argument are null!");
-                Algos.Algo algos = algo switch
+                Algo algos = algo switch
                 {
-                    "1" => Algos.Algo.Dijkstras,
-                    "2" => Algos.Algo.Prims,
-                    _ => Algos.Algo.KarpRabins
+                    "1" => Algo.Dijkstras,
+                    "2" => Algo.Prims,
+                    _ => Algo.KarpRabins
                 };
                 Console.Clear();
                 return (algos, dir);
