@@ -15,19 +15,26 @@ namespace FourthLab.Structure
             return (searched.OrderBy(x => x.Length).ToList(), values.Last());
         }
 
-        public static List<List<int>> ParseOrientedGraph(string dir)
+        public static (List<List<int>>, int) ParseOrientedGraph(string dir)
         {
             return ParseGraph(dir, true);
         }
 
         public static List<List<int>> ParseUnorientedGraph(string dir)
         {
-            return ParseGraph(dir, false);
+            return ParseGraph(dir, false).Item1;
         }
 
-        private static List<List<int>> ParseGraph(string dir, bool oriented)
+        private static (List<List<int>>, int) ParseGraph(string dir, bool oriented)
         {
             string contest = File.ReadAllText(dir);
+            int start = 0;
+            if (oriented)
+            {
+                int sPos = contest.LastIndexOf("Start=") + "Start=".Length;
+                int length = contest.IndexOf(";") - sPos;
+                start = int.Parse(contest.Substring(sPos, length));
+            }
             var values = contest.Replace(" ", "").ReplaceLineEndings("")
                                 .Split(new char[] { ',', '.' }).Where(x => x.Length == 4)
                                 .Select(x => new { FromNode = ToInt(x[0]), ToNode = ToInt(x[1]), Weight = ToInt(x[3]) });
@@ -45,7 +52,7 @@ namespace FourthLab.Structure
                     graph[v.ToNode - 1][v.FromNode - 1] = v.Weight;
                 }
             }
-            return graph;
+            return (graph, start);
         }
 
         private static int ToInt(char c) => (int)char.GetNumericValue(c);

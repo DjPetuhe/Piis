@@ -25,8 +25,8 @@ namespace FourthLab.Structure
                         PrintResultsKarpRabing(KarpRabinsAlgo.Solve(valuesKR.Item1, valuesKR.Item2), valuesKR);
                         break;
                     case Algo.Dijkstras:
-                        List<List<int>> valuesD = Parser.ParseOrientedGraph(input.Item2);
-                        PrintResultsDijkstra(DijkstrasAlgo.Solve(valuesD), valuesD);
+                        (List<List<int>>, int) valuesD = Parser.ParseOrientedGraph(input.Item2);
+                        PrintResultsDijkstra(DijkstrasAlgo.Solve(valuesD.Item1, valuesD.Item2 - 1), valuesD.Item1, valuesD.Item2);
                         break;
                     case Algo.Prims:
                         List<List<int>> valuesP = Parser.ParseUnorientedGraph(input.Item2);
@@ -86,12 +86,32 @@ namespace FourthLab.Structure
             }
         }
 
-        private static void PrintResultsDijkstra(List<int> lenghts, List<List<int>> values)
+        private static void PrintResultsDijkstra((List<int>, List<int>) results, List<List<int>> graph, int start)
         {
             Console.WriteLine("Choosen algorithm: Dijkstra's\n");
             Console.WriteLine("Starting oriented graph as a adjecency matrix:\n");
-            PrintMatrix(values);
-            //TODO: print results
+            PrintMatrix(graph);
+            Console.WriteLine($"\nStarting vertex: {start}");
+            for (int i = 0; i < graph.Count; i++)
+            {
+                if (i == start - 1) continue;
+                Console.WriteLine($"\nvertex {i + 1}");
+                Console.WriteLine($"Distance: {results.Item1[i]}");
+                Console.WriteLine($"Path from {start} vertex: " + StringPath(results.Item2, i, start - 1));
+            }
+        }
+
+        private static string StringPath(List<int> parent, int from, int to)
+        {
+            if (parent[from] == -1) return "no path";
+            int i = from;
+            string result = ";";
+            while (i != to)
+            {
+                result = $" -> {i + 1}" + result;
+                i = parent[i];
+            }
+            return (to + 1).ToString() + result;
         }
 
         private static void PrintResultsPrim(List<int> mst, List<List<int>> values)
