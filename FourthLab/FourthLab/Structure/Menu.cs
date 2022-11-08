@@ -114,12 +114,22 @@ namespace FourthLab.Structure
             return (to + 1).ToString() + result;
         }
 
-        private static void PrintResultsPrim(List<int> mst, List<List<int>> values)
+        private static void PrintResultsPrim(List<int> mst, List<List<int>> graph)
         {
             Console.WriteLine("Choosen algorithm: Prim's\n");
             Console.WriteLine("Starting unoriented graph as a adjecency matrix:\n");
-            PrintMatrix(values);
-            //TODO: print results
+            PrintMatrix(graph);
+            Console.Write('\n');
+            int totalWeight = 0;
+            for (int i = 0; i < graph.Count; i++)
+            {
+                if (mst[i] + 1 > 0)
+                {
+                    Console.WriteLine($"Edge: {i + 1} - {mst[i] + 1}\t Weight: {graph[i][mst[i]]}");
+                    totalWeight += graph[i][mst[i]];
+                }
+            }
+            Console.WriteLine($"\nTotal MST weight: {totalWeight}");
         }
 
         private static void PrintMatrix(List<List<int>> graph)
