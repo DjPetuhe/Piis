@@ -96,7 +96,7 @@ namespace FourthLab.Structure
             {
                 if (i == start - 1) continue;
                 Console.WriteLine($"\nvertex {i + 1}");
-                Console.WriteLine($"Distance: {results.Item1[i]}");
+                Console.WriteLine($"Distance: {(results.Item1[i] == int.MaxValue ? "inf" : results.Item1[i])}");
                 Console.WriteLine($"Path from {start} vertex: " + StringPath(results.Item2, i, start - 1));
             }
         }
